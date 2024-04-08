@@ -3,23 +3,17 @@
 import { ThunkAction } from 'redux-thunk';
 import { SEARCH_USER_REQUEST, SEARCH_USER_SUCCESS, SEARCH_USER_FAILURE } from '../action/types'
 import { SearchUserAction } from '../reducer/search';
+import { Alert } from 'react-native';
+import { RootState } from '..';
+const leaderboard=require('../../JSON/leaderboard.json')
 
 export const searchUser = (
     username: string
   ): ThunkAction<void, RootState, unknown, SearchUserAction> => async (dispatch, getState) => {
     dispatch({ type: SEARCH_USER_REQUEST });
   
-    try {
-      // Simulate fetching data (replace with actual API call)
-      const response = await fetch('example.com/api/user/' + username);
-      const data = await response.json();
-  
-      if (!data || !data.leaderboard) {
-        throw new Error('User not found');
-      }
-  
-      const { leaderboard } = data;
-  
+
+    try {  
       // Process leaderboard to determine ranks
       const sortedLeaderboard = Object.values(leaderboard).sort((a, b) => b.bananas - a.bananas);
   
@@ -27,9 +21,17 @@ export const searchUser = (
       const searchedUserIndex = sortedLeaderboard.findIndex((user) => user.name === username);
   
       if (searchedUserIndex === -1) {
-        throw new Error('User not found');
+       Alert.alert('This user name does not exist! Please specify an existing user name!');
       }
-  
+      if (searchedUserIndex >= 10) {
+        console.log(searchedUserIndex,'searchedUserIndex');
+        console.log(sortedLeaderboard[9],'sortedLeaderboard[9]');
+        console.log(sortedLeaderboard[searchedUserIndex],'sortedLeaderboard[searchedUserIndex]');
+        
+        const lastRankedUser =  sortedLeaderboard[9]; // Get the user at rank 10
+        sortedLeaderboard[searchedUserIndex] = lastRankedUser; // Replace searched user
+      }
+
       dispatch({
         type: SEARCH_USER_SUCCESS,
         payload: { username, leaderboard: sortedLeaderboard },

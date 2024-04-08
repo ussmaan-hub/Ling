@@ -3,15 +3,15 @@ import React from 'react'
 import { InputInterface } from '../Interfaces'
 
 const width = Dimensions.get('screen').width
-const Input: React.FC<InputInterface> = ({ InputValue, setInputValue }) => {
+const Input: React.FC<InputInterface> = ({ InputValue, setInputValue,onpress }) => {
   return (
     <View style={styles.main}>
       <View style={styles.seachView}>
         <Image source={require('../assets/images/search.png')} style={styles.image} />
-        <TextInput placeholder='Search' value={InputValue} onChangeText={setInputValue} style={{ flex: 1, paddingLeft: 5 }} />
+        <TextInput placeholder='Search' placeholderTextColor={'black'} value={InputValue} onChangeText={setInputValue} style={{ flex: 1, paddingLeft: 5,color:'black' }} />
       </View>
-      <TouchableOpacity style={styles.button}>
-        <Text>
+      <TouchableOpacity onPress={onpress} style={styles.button}>
+        <Text style={{color:'black'}}>
           Search
         </Text>
       </TouchableOpacity>
