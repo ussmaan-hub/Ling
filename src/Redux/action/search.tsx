@@ -15,10 +15,10 @@ export const searchUser = (
 
     try {  
       // Process leaderboard to determine ranks
-      const sortedLeaderboard = Object.values(leaderboard).sort((a, b) => b.bananas - a.bananas);
+      const sortedLeaderboard = Object.values(leaderboard).sort((a: any, b: any) => b.bananas - a.bananas);
   
       // Find index of searched user
-      const searchedUserIndex = sortedLeaderboard.findIndex((user) => user.name === username);
+      const searchedUserIndex = sortedLeaderboard.findIndex((user:any) => user.name === username);
   
       if (searchedUserIndex === -1) {
        Alert.alert('This user name does not exist! Please specify an existing user name!');
@@ -34,9 +34,11 @@ export const searchUser = (
 
       dispatch({
         type: SEARCH_USER_SUCCESS,
-        payload: { username, leaderboard: sortedLeaderboard },
+        payload: { username, leaderboard: sortedLeaderboard,columnIndex:searchedUserIndex }
       });
-    } catch (error) {
+      
+
+    } catch (error:any) {
       dispatch({
         type: SEARCH_USER_FAILURE,
         payload: error.message || 'An error occurred',
