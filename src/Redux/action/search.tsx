@@ -45,3 +45,34 @@ export const searchUser = (
       });
     }
   };
+export const searchUserByName = (
+    partialUsername: string
+  ): ThunkAction<void, RootState, unknown, SearchUserAction> => async (dispatch, getState) => {
+    dispatch({ type: SEARCH_USER_REQUEST });
+  
+
+    try {  
+      const sortedLeaderboard = Object.values(leaderboard).sort((a: any, b: any) => b.bananas - a.bananas);
+  
+      dispatch({
+        type: SEARCH_USER_SUCCESS,
+        payload: { username:partialUsername, leaderboard: sortedLeaderboard.filter((i,index)=> i.name.toLowerCase().includes(partialUsername.toLowerCase())),columnIndex:null }
+      });
+      
+
+    } catch (error:any) {
+      dispatch({
+        type: SEARCH_USER_FAILURE,
+        payload: error.message || 'An error occurred',
+      });
+    }
+  };
+
+  export const clearOutName = (): ThunkAction<void, RootState, unknown, SearchUserAction> => async (dispatch, getState) => {
+    dispatch({ type: SEARCH_USER_REQUEST });
+    dispatch({
+      type: SEARCH_USER_SUCCESS,
+      payload: { username:'', leaderboard: leaderboard,columnIndex:null }
+    })
+
+  }

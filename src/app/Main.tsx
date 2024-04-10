@@ -4,7 +4,7 @@ import Input from '../component/Input';
 import List from '../component/List';
 import {useDispatch} from 'react-redux';
 import {Dispatch} from 'redux';
-import {searchUser} from '../Redux/action/search';
+import {clearOutName, searchUser, searchUserByName} from '../Redux/action/search';
 
 type Props = {};
 
@@ -14,6 +14,24 @@ const Main = (props: Props) => {
 
   const handleSearch = () => {
     dispatch(searchUser(inputValue));
+  };
+  let searchTimeout: NodeJS.Timeout;
+
+
+
+  const onHalfwaySearch = (text: string) => {
+    clearSearchTimeout();
+    searchTimeout = setTimeout(() => {
+      dispatch(searchUserByName(text));
+    }, 1000);
+    if(text.length===0)
+      {
+        dispatch(clearOutName());
+      }
+
+  };
+  const clearSearchTimeout = () => {
+    clearTimeout(searchTimeout);
   };
   return (
     <View
@@ -29,7 +47,7 @@ const Main = (props: Props) => {
             handleSearch();
           }}
           InputValue={inputValue}
-          setInputValue={setInputValue}
+          setInputValue={(text)=> (setInputValue(text), onHalfwaySearch(text))}
         />
         <List />
       </View>

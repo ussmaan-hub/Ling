@@ -6,7 +6,6 @@ import {Provider, useDispatch} from 'react-redux';
 import store, {AppDispatch} from './src/Redux/index';
 import {searchUser} from './src/Redux/action/search';
 import {ThunkDispatch} from 'redux-thunk';
-import {useAppDispatch} from './src/app/hook';
 import {Dispatch} from 'redux';
 import Main from './src/app/Main';
 export default function App() {
